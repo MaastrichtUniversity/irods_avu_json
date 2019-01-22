@@ -2,7 +2,7 @@
 
 import json
 
-# Fix to make code compatible in python 3 and python 3
+# Fix to check for string type in both python 2 and python 3
 try:
     # noinspection PyUnboundLocalVariable
     basestring
@@ -84,7 +84,7 @@ def json2avu(d, root):
     # Start at blank node 0
     blank = 0
 
-    if isinstance(d, str):
+    if isinstance(d, basestring):
         # Handle special case where there is only a string
         out = [{
             "a": d,
