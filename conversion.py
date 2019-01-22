@@ -2,13 +2,20 @@
 
 import json
 
+# Fix to make code compatible in python 3 and python 3
+try:
+    # noinspection PyUnboundLocalVariable
+    basestring
+except NameError:
+    basestring = str
+
 
 def obj2avu(d, root, blank):
     out = list()
 
     # Loop through object
     for key, item in d.items():
-        if isinstance(item, str):
+        if isinstance(item, basestring):
             out.append({
                 "a": key,
                 "v": item,
@@ -27,7 +34,7 @@ def array2avu(d, root, attribute, blank):
 
     # Loop through array
     for idx, item in enumerate(d):
-        if isinstance(item, str):
+        if isinstance(item, basestring):
             out.append({
                 "a": attribute,
                 "v": item,
