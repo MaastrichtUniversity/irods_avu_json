@@ -106,7 +106,7 @@ avu = json2avu(data, "root")
 
 print(json.dumps(data, indent=4))
 
-print("%10s %10s %10s" % ("a", "v", "u"))
-print("%10s %10s %10s" % ("p", "o", "s"))
+print("%10s %10s %10s" % ("A", "V", "U"))
+print("%10s %10s %10s" % ("P", "O", "S"))
 for i in avu:
     print("%10s %10s %10s" % (i["a"], i["v"], i["u"]))
