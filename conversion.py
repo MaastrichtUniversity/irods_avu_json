@@ -15,7 +15,16 @@ def obj2avu(d, root, blank):
 
     # Loop through object
     for key, item in d.items():
+        if key == "@context":
+            continue
+
         if isinstance(item, basestring):
+            out.append({
+                "a": key,
+                "v": item,
+                "u": root
+            })
+        elif isinstance(item, int):
             out.append({
                 "a": key,
                 "v": item,
@@ -38,6 +47,12 @@ def array2avu(d, root, attribute, blank):
         u = root + "#" + str(idx)
 
         if isinstance(item, basestring):
+            out.append({
+                "a": attribute,
+                "v": item,
+                "u": u
+            })
+        elif isinstance(item, int):
             out.append({
                 "a": attribute,
                 "v": item,
