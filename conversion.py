@@ -121,7 +121,11 @@ avu = json2avu(data, "root")
 
 print(json.dumps(data, indent=4))
 
-print("%10s %10s %10s" % ("A", "V", "U"))
-print("%10s %10s %10s" % ("P", "O", "S"))
+# Find out max V length and use that for formatting
+max_v_len = len(max(avu, key=lambda k: len(str(k["v"])))["v"])
+out_format = "%30s %" + str(max_v_len + 5) + "s %10s"
+
+print(out_format % ("A", "V", "U"))
+print(out_format % ("P", "O", "S"))
 for i in avu:
-    print("%10s %10s %10s" % (i["a"], i["v"], i["u"]))
+    print(out_format % (i["a"], i["v"], i["u"]))
