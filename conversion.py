@@ -34,15 +34,18 @@ def array2avu(d, root, attribute, blank):
 
     # Loop through array
     for idx, item in enumerate(d):
+        # Add the index of the array as part of the subject/unit
+        u = root + "#" + str(idx)
+
         if isinstance(item, basestring):
             out.append({
                 "a": attribute,
                 "v": item,
-                "u": root + "#" + str(idx)
+                "u": u
             })
         else:
             # Not a string, convert objects and lists recursively
-            o, blank = json2avu_r(item, root, attribute, blank)
+            o, blank = json2avu_r(item, u, attribute, blank)
             out.extend(o)
 
     return out, blank
