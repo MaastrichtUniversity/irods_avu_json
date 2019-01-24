@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
 import json
+import sys
+
 import jsonavu
 
-with open('inputs/basic.json') as f:
+with open(sys.argv[1]) as f:
     data = json.load(f)
 
 avu = jsonavu.json2avu(data, "root")

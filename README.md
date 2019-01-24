@@ -29,7 +29,7 @@ Took ideas from RDF.
 Compatible with Python 2 and 3.
 
 ```bash
-python conversion.py
+python conversion.py inputs/basic.json
 ```
 
 ## Example output
