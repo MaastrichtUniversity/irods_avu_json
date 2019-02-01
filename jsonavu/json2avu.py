@@ -1,4 +1,6 @@
 # Workaround to check for string type in both python 2 and python 3
+import json
+
 try:
     # noinspection PyUnboundLocalVariable,PyUnresolvedReferences
     basestring
@@ -11,9 +13,9 @@ def obj2avu(d, root, blank):
 
     # Loop through object
     for key, item in d.items():
-        # TODO: Work out the details of this JSON-LD specific conversion
-        if key == "@context":
-            continue
+        # If @context is not a string serialize to string
+        if key == "@context" and not isinstance(item, basestring):
+            item = json.dumps(item)
 
         if isinstance(item, basestring) or isinstance(item, int):
             out.append({
