@@ -84,8 +84,16 @@ JSON:
 }
 ```
 
-## Limits
+## Limits/bugs
 
 On the AVU side
-* If two AVUs have the same attribute but different values 
-* Not compatible with AVUs already containing data in the unit column
+* If two AVUs have the same attribute but different values only the last one ends up in the JSON. 
+* AVUs already containing data in the unit column will be ignored
+* Nested arrays, can be stored, but will not be converted from AVUs to JSON (fixable)
+
+On the JSON side
+* Empty objects will become black nodes, but not converted back to empty objects
+* Empty key/value pairs cannot be converted, as iRODS does not allow an AVU with an empty value
+
+On the JSON-LD side
+* Not handling "@context" properly yet
