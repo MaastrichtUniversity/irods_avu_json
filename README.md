@@ -12,12 +12,13 @@ This script describes a method for converting JSON to AVU triples and back again
 
 ## Design goals
 
-* Lean JSON -> AVU conversion. Don't explode the JSON unnecessarily in AVUs
-* Being able to maintain order in JSON arrays
-* Should not place any restrictions on the JSON input (i.e limit the characters used in an attribute)
-* Keep Attribute->Value pairs the same in JSON and AVUs (for both arrays and objects). So they remain easily accessible in default rule language and genquery.
-* Compatible with existing or additional AVUs already present on an object
-* Validatable by JSON-schema files
+* Bijection between JSON <-> AVU
+  * i.e no limit on the characters used in an attribute
+  * i.e being able to maintain order in arrays
+* Lean JSON -> AVU conversion. 
+  * Don't explode the JSON unnecessarily in AVUs
+* Keep Attribute->Value pairs the same in JSON and AVUs. So values remain easily accessible from within iRODS
+* Compatible with existing or additional AVUs 
 * Compatible/aware of JSON-LD
 
 
@@ -87,13 +88,14 @@ JSON:
 ## Limits/bugs
 
 On the AVU side
-* If two AVUs have the same attribute but different values only the last one ends up in the JSON. 
-* AVUs already containing data in the unit column will be ignored
+* If two AVUs have the same attribute but different values only the last one ends up in the JSON (possible in AVUs!)
+* AVUs already containing data in the unit column will be ignored (possibly a good thing)
 * Nested arrays, can be stored, but will not be converted from AVUs to JSON (fixable)
 
 On the JSON side
-* Empty objects will become black nodes, but not converted back to empty objects
+* Empty objects will become blank nodes, but not converted back to empty objects
 * Empty key/value pairs cannot be converted, as iRODS does not allow an AVU with an empty value
+* Other JSON types: integers, booleans and null
 
 On the JSON-LD side
 * Not handling "@context" properly yet

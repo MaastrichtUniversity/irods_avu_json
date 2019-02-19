@@ -1,6 +1,6 @@
-# Workaround to check for string type in both python 2 and python 3
 import json
 
+# Workaround to check for string type in both python 2 and python 3
 try:
     # noinspection PyUnboundLocalVariable,PyUnresolvedReferences
     basestring
