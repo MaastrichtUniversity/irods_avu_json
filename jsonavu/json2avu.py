@@ -13,16 +13,16 @@ def obj2avu(d, prefix, parent, new_parent):
 
     # Loop through object
     for key, item in d.items():
-        if isinstance(item, basestring) or isinstance(item, int):
-            out.append({
-                "a": key,
-                "v": item,
-                "u": prefix + "_" + str(parent) + "_" + "s"
-            })
-        else:
-            # Not a string or int, convert objects and lists recursively
+        if isinstance(item, dict) or isinstance(item, list):
+            # Convert objects and lists recursively
             o, new_parent = json2avu_r(item, prefix, parent, new_parent, key)
             out.extend(o)
+        else:
+            out.append({
+                "a": key,
+                "v": type2str(item),
+                "u": prefix + "_" + str(parent) + "_" + type2def(item)
+            })
 
     return out, new_parent
 
@@ -32,13 +32,7 @@ def array2avu(d, prefix, parent, new_parent, attribute):
 
     # Loop through array
     for idx, item in enumerate(d):
-        if isinstance(item, basestring) or isinstance(item, int):
-            out.append({
-                "a": attribute,
-                "v": item,
-                "u": prefix + "_" + str(parent) + "_" + "s#" + str(idx)
-            })
-        else:
+        if isinstance(item, dict) or isinstance(item, list):
             # Not a string or int, convert objects and lists recursively
             o, new_parent = json2avu_r(item, prefix, parent, new_parent, attribute)
 
@@ -46,6 +40,12 @@ def array2avu(d, prefix, parent, new_parent, attribute):
             o[0]['u'] = o[0]['u'] + "#" + str(idx)
 
             out.extend(o)
+        else:
+            out.append({
+                "a": attribute,
+                "v": type2str(item),
+                "u": prefix + "_" + str(parent) + "_" + type2def(item) + "#" + str(idx)
+            })
 
     return out, new_parent
 
@@ -93,3 +93,29 @@ def json2avu(d, prefix):
         out, _ = array2avu(d, prefix, parent, parent, prefix)
 
     return out
+
+
+def type2def(var):
+    if isinstance(var, basestring):
+        return 's'
+    elif isinstance(var, bool):
+        return 'b'
+    elif isinstance(var, int):
+        return 'n'
+    elif isinstance(var, float):
+        return 'n'
+    elif var is None:
+        return 'z'
+
+
+def type2str(var):
+    if isinstance(var, basestring):
+        return var
+    elif isinstance(var, bool):
+        return str(var)
+    elif isinstance(var, int):
+        return str(var)
+    elif isinstance(var, float):
+        return str(var)
+    elif var is None:
+        return '.'
