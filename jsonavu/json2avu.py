@@ -8,94 +8,88 @@ except NameError:
     basestring = str
 
 
-def obj2avu(d, root, blank):
+def obj2avu(d, prefix, parent, new_parent):
     out = list()
 
     # Loop through object
     for key, item in d.items():
-        # If @context is not a string serialize to string
-        if key == "@context" and not isinstance(item, basestring):
-            item = json.dumps(item)
-
         if isinstance(item, basestring) or isinstance(item, int):
             out.append({
                 "a": key,
                 "v": item,
-                "u": root
+                "u": prefix + "_" + str(parent) + "_" + "s"
             })
         else:
             # Not a string or int, convert objects and lists recursively
-            o, blank = json2avu_r(item, root, key, blank)
+            o, new_parent = json2avu_r(item, prefix, parent, new_parent, key)
             out.extend(o)
 
-    return out, blank
+    return out, new_parent
 
 
-def array2avu(d, root, attribute, blank):
+def array2avu(d, prefix, parent, new_parent, attribute):
     out = list()
 
     # Loop through array
     for idx, item in enumerate(d):
-        # Add the index of the array as part of the subject/unit
-        u = root + "#" + str(idx)
-
         if isinstance(item, basestring) or isinstance(item, int):
             out.append({
                 "a": attribute,
                 "v": item,
-                "u": u
+                "u": prefix + "_" + str(parent) + "_" + "s#" + str(idx)
             })
         else:
             # Not a string or int, convert objects and lists recursively
-            o, blank = json2avu_r(item, u, attribute, blank)
+            o, new_parent = json2avu_r(item, prefix, parent, new_parent, attribute)
+
+            # Append the index to the first element returned
+            o[0]['u'] = o[0]['u'] + "#" + str(idx)
+
             out.extend(o)
 
-    return out, blank
+    return out, new_parent
 
 
-def json2avu_r(d, root, attribute, blank):
+def json2avu_r(d, prefix, parent, new_parent, attribute):
     out = list()
 
     if isinstance(d, dict):
-        # Create blank node
+        # Increase parent counter
+        new_parent = new_parent + 1
+
+        # Create a new parent
         out.append({
             "a": attribute,
-            "v": "_b" + str(blank),
-            "u": root
+            "v": ".",
+            "u": prefix + "_" + str(parent) + "_" + "o" + str(new_parent)
         })
 
-        # Set new root
-        root = "_b" + str(blank)
-
-        # Increase blank node
-        blank = blank + 1
-
-        o, blank = obj2avu(d, root, blank)
+        o, parent = obj2avu(d, prefix, new_parent, new_parent)
         out.extend(o)
     elif isinstance(d, list):
-        o, blank = array2avu(d, root, attribute, blank)
+        o, parent = array2avu(d, prefix, parent, new_parent, attribute)
         out.extend(o)
 
-    return out, blank
+    return out, parent
 
 
-def json2avu(d, root):
+def json2avu(d, prefix):
     # List of dictionaries to hold AVUs
     out = list()
 
-    # Start at blank node 0
-    blank = 0
+    # Start at parent 0
+    parent = 0
 
     if isinstance(d, basestring) or isinstance(d, int):
         # Handle special case where there is only a string or integer
         out = [{
-            "a": root,
+            "a": prefix,
             "v": d,
-            "u": root
+            "u": prefix
         }]
     elif isinstance(d, dict):
-        out, _ = obj2avu(d, root, blank)
+        out, _ = obj2avu(d, prefix, parent, parent)
     elif isinstance(d, list):
-        out, _ = array2avu(d, root, root, blank)
+        out, _ = array2avu(d, prefix, parent, parent, prefix)
 
     return out
