@@ -5,7 +5,7 @@ def avu2json(avu, prefix, parent=0):
     data = None
 
     # Regular expression pattern for unit field
-    pattern = re.compile('^[a-zA-Z0-9_]+_([0-9]+)_([osbnz])((?<=o)[0-9]+)?#?([0-9]+)?')
+    pattern = re.compile('^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?#?([0-9]+)?')
     # Group 1: parent, group 2: var type, group 3: object id, group 4: array index
 
     for item in avu:
@@ -54,6 +54,8 @@ def avu2json(avu, prefix, parent=0):
 def def2type(v, t):
     if t == 's':
         return str(v)
+    elif t == 'e':
+        return ""
     elif t == 'b':
         if v == 'True':
             return True

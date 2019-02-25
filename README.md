@@ -27,8 +27,17 @@ The unit is field is being used for the following purposes:
 
 * Defining the JSON root
 * The parent object (0 by default)
-* The object type (o, s, b, n, z)
+* The object type (o, s, b, n, z, e)
 * The array index
+
+AVUs only allow a string value. The types are converted as follows:
+
+* s: string 
+* o: object ("o" + object_id)
+* b: boolean ("True" or "False")
+* n: number (String value of float or int)
+* z: null (".")
+* e: empty string (".") (special case as AVUs don't allow empty values)
 
 ## How to run
 
@@ -61,12 +70,12 @@ Source:
 AVUs:
       A       V               U
      k1      v1        root_0_s
-     k2       .       root_0_o1
+     k2      o1       root_0_o1
      k3      v2        root_1_s
      k4      v3        root_1_s
      k5      v4      root_0_s#0
      k5      v5      root_0_s#1
-     k6       .     root_0_o2#0
+     k6      o1     root_0_o2#0
      k7      v6        root_2_s
      k8      v7        root_2_s
 JSON:
@@ -96,4 +105,3 @@ On the AVU side
 
 On the JSON side
 * Nested arrays ([["foo"]])
-* Empty key/value pairs cannot be converted, as iRODS does not allow an AVU with an empty value (considering making it a special type)

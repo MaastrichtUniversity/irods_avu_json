@@ -60,7 +60,7 @@ def json2avu_r(d, prefix, parent, new_parent, attribute):
         # Create a new parent
         out.append({
             "a": attribute,
-            "v": ".",
+            "v": "o" + str(new_parent),
             "u": prefix + "_" + str(parent) + "_" + "o" + str(new_parent)
         })
 
@@ -97,7 +97,10 @@ def json2avu(d, prefix):
 
 def type2def(var):
     if isinstance(var, basestring):
-        return 's'
+        if var == "":
+            return 'e'
+        else:
+            return 's'
     elif isinstance(var, bool):
         return 'b'
     elif isinstance(var, int):
@@ -110,7 +113,10 @@ def type2def(var):
 
 def type2str(var):
     if isinstance(var, basestring):
-        return var
+        if var == "":
+            return '.'
+        else:
+            return var
     elif isinstance(var, bool):
         return str(var)
     elif isinstance(var, int):
