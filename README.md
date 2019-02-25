@@ -23,7 +23,12 @@ This script describes a method for converting JSON to AVU triples and back again
 
 
 ## Implementation
-Took ideas from RDF.
+The unit is field is being used for the following purposes:
+
+* Defining the JSON root
+* The parent object (0 by default)
+* The object type (o, s, b, n, z)
+* The array index
 
 ## How to run
 
@@ -37,50 +42,49 @@ python conversion.py inputs/basic.json
 ```
 Source:
 {
+    "k1": "v1",
     "k2": {
-        "k3": "v2", 
+        "k3": "v2",
         "k4": "v3"
-    }, 
-    "k1": "v1", 
+    },
+    "k5": [
+        "v4",
+        "v5"
+    ],
     "k6": [
         {
-            "k8": "v7", 
-            "k7": "v6"
+            "k7": "v6",
+            "k8": "v7"
         }
-    ], 
-    "k5": [
-        "v4", 
-        "v5"
     ]
 }
 AVUs:
-      A        V          U
-      P        O          S
-     k2      _b0       root
-     k3       v2        _b0
-     k4       v3        _b0
-     k1       v1       root
-     k6      _b1     root#0
-     k8       v7        _b1
-     k7       v6        _b1
-     k5       v4     root#0
-     k5       v5     root#1
+      A       V               U
+     k1      v1        root_0_s
+     k2       .       root_0_o1
+     k3      v2        root_1_s
+     k4      v3        root_1_s
+     k5      v4      root_0_s#0
+     k5      v5      root_0_s#1
+     k6       .     root_0_o2#0
+     k7      v6        root_2_s
+     k8      v7        root_2_s
 JSON:
 {
+    "k1": "v1",
     "k2": {
-        "k3": "v2", 
+        "k3": "v2",
         "k4": "v3"
-    }, 
-    "k1": "v1", 
+    },
+    "k5": [
+        "v4",
+        "v5"
+    ],
     "k6": [
         {
-            "k8": "v7", 
-            "k7": "v6"
+            "k7": "v6",
+            "k8": "v7"
         }
-    ], 
-    "k5": [
-        "v4", 
-        "v5"
     ]
 }
 ```
@@ -88,14 +92,8 @@ JSON:
 ## Limits/bugs
 
 On the AVU side
-* If two AVUs have the same attribute but different values only the last one ends up in the JSON (possible in AVUs!)
-* AVUs already containing data in the unit column will be ignored (possibly a good thing)
-* Nested arrays, can be stored, but will not be converted from AVUs to JSON (fixable)
+* If two AVUs have the same attribute but different values only the last one ends up in the JSON
 
 On the JSON side
-* Empty objects will become blank nodes, but not converted back to empty objects
-* Empty key/value pairs cannot be converted, as iRODS does not allow an AVU with an empty value
-* Other JSON types: integers, booleans and null
-
-On the JSON-LD side
-* Not handling "@context" properly yet
+* Nested arrays ([["foo"]])
+* Empty key/value pairs cannot be converted, as iRODS does not allow an AVU with an empty value (considering making it a special type)
