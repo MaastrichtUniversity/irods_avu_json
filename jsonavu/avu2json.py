@@ -9,7 +9,7 @@ def avu2json(avu, prefix, parent=0):
     # Group 1: parent, group 2: var type, group 3: object id, group 4: array index
 
     for item in avu:
-        if not item['u'].startswith(prefix + "_" + str(parent)):
+        if not item['u'].startswith(prefix + "_" + str(parent) + "_"):
             continue
 
         # Match unit to extract all info
