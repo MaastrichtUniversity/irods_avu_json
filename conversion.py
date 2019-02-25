@@ -24,6 +24,5 @@ for i in avu:
     print(out_format % (i["a"], i["v"], i["u"]))
 
 print("JSON:")
-#data_back = jsonavu.avu2json(avu, "root")
-
-#print(json.dumps(data_back, indent=4))
+data_back = jsonavu.avu2json(avu, "root")
+print(json.dumps(data_back, indent=4))
