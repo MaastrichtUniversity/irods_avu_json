@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/MaastrichtUniversity/irods_avu_json",
-    packages=setuptools.find_packages(),
+    py_modules=['jsonavu'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",

@@ -39,12 +39,10 @@ AVUs only allow a string value. The types are converted as follows:
 * z: null (".")
 * e: empty string (".") (special case as AVUs don't allow empty values)
 
-## How to run
-
-Compatible with Python 2 and 3.
-
+## Installation
+Either clone the git repository, or use pip to install only the module into your virtual environment:
 ```bash
-python conversion.py inputs/basic.json
+pip install https://github.com/MaastrichtUniversity/irods_avu_json/archive/master.zip
 ```
 
 ## Example output
@@ -96,6 +94,13 @@ JSON:
         }
     ]
 }
+```
+## Development helpers
+
+Use the `conversion.py` script for easy development. Compatible with Python 2 and 3.
+
+```bash
+python conversion.py inputs/basic.json
 ```
 
 ## Testing
