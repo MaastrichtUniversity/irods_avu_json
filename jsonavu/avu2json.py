@@ -5,8 +5,11 @@ def avu2json(avu, prefix, parent=0):
     data = None
 
     # Regular expression pattern for unit field
-    pattern = re.compile('^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?#?([0-9]+)?')
-    # Group 1: parent, group 2: var type, group 3: object id, group 4: array index
+    pattern = re.compile('^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)')
+    # Group 1: parent, group 2: var type, group 3: object id, group 4: array indices
+
+    # Matching the array indices separately
+    indices_pattern = re.compile('#([0-9]+)')
 
     for item in avu:
         if not item['u'].startswith(prefix + "_" + str(parent) + "_"):
@@ -19,10 +22,17 @@ def avu2json(avu, prefix, parent=0):
         if not unit:
             continue
 
-        # Extract info from regex
+        # Extract var type and object ID from regex
         var_type = unit.group(2)
         object_id = int(unit.group(3)) if unit.group(3) else None
-        array_idx = int(unit.group(4)) if unit.group(4) else None
+
+        # Extract array indices
+        array_indices = None
+        if unit.group(4):
+            array_indices = indices_pattern.findall(unit.group(4))
+
+            # Convert to integers
+            array_indices = list(map(int, array_indices))
 
         if not isinstance(data, dict):
             data = dict()
@@ -38,17 +48,34 @@ def avu2json(avu, prefix, parent=0):
             value = def2type(item['v'], var_type)
 
         # Build array if it doesn't exist yet
-        if array_idx is not None and key not in data:
+        if array_indices is not None and key not in data:
             data[key] = list()
 
         # Store item in data
         if key in data and isinstance(data[key], list):
-            # It's a list item, place it back at correct index
-            data[key].insert(array_idx, value)
+            # It's a list item, place it back at correct index of the potential multidimensional list
+            multi_dim_list_insert(data[key], array_indices, value)
         else:
             data[key] = value
 
     return data
+
+
+def multi_dim_list_insert(data, array_indices, value):
+    # Get first element from list and remove that
+    idx = array_indices.pop(0)
+
+    if len(array_indices) > 0:
+        # Check if we need to make new list
+        try:
+            data[idx]
+        except IndexError:
+            data.insert(idx, list())
+
+        # Recursively handle multi dimensional list
+        return multi_dim_list_insert(data[idx], array_indices, value)
+    else:
+        return data.insert(idx, value)
 
 
 def def2type(v, t):

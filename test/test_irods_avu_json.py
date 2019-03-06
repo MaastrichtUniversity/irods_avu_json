@@ -144,8 +144,8 @@ class TestIrodsAvuJson(unittest.TestCase):
         data = json.loads('{"k1": "v1","k2":[["v4", "v5"],["v6", "v7"]]}')
         avu = jsonavu.json2avu(data, "root")
         expected_avu = [{'a': u'k2', 'u': 'root_0_s#0#0', 'v': u'v4'},
-                        {'a': u'k2', 'u': 'root_0_s#1#0', 'v': u'v5'},
-                        {'a': u'k2', 'u': 'root_0_s#0#1', 'v': u'v6'},
+                        {'a': u'k2', 'u': 'root_0_s#0#1', 'v': u'v5'},
+                        {'a': u'k2', 'u': 'root_0_s#1#0', 'v': u'v6'},
                         {'a': u'k2', 'u': 'root_0_s#1#1', 'v': u'v7'},
                         {'a': u'k1', 'u': 'root_0_s', 'v': u'v1'}]
         self.assertCountEqual(expected_avu, avu)
@@ -155,12 +155,12 @@ class TestIrodsAvuJson(unittest.TestCase):
         Test if simple avu is correctly transformed to json using object as type
         """
         data = [{'a': u'k2', 'u': 'root_0_s#0#0', 'v': u'v4'},
-                {'a': u'k2', 'u': 'root_0_s#1#0', 'v': u'v5'},
-                {'a': u'k2', 'u': 'root_0_s#0#1', 'v': u'v6'},
+                {'a': u'k2', 'u': 'root_0_s#0#1', 'v': u'v5'},
+                {'a': u'k2', 'u': 'root_0_s#1#0', 'v': u'v6'},
                 {'a': u'k2', 'u': 'root_0_s#1#1', 'v': u'v7'},
                 {'a': u'k1', 'u': 'root_0_s', 'v': u'v1'}]
         json_output = jsonavu.avu2json(data, "root")
-        self.assertCountEqual('{"k1": "v1","k2":[["v4", "v5"],["v6", "v7"]]}', json.dumps(json_output, sort_keys=True))
+        self.assertEqual('{"k1": "v1", "k2": [["v4", "v5"], ["v6", "v7"]]}', json.dumps(json_output, sort_keys=True))
 
     def test_simple_bidirectional(self):
         """

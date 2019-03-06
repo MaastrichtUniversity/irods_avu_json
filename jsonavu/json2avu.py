@@ -1,5 +1,3 @@
-import json
-
 # Workaround to check for string type in both python 2 and python 3
 try:
     # noinspection PyUnboundLocalVariable,PyUnresolvedReferences
@@ -15,7 +13,7 @@ def obj2avu(d, prefix, parent, new_parent):
     for key, item in d.items():
         if isinstance(item, dict) or isinstance(item, list):
             # Convert objects and lists recursively
-            o, new_parent = json2avu_r(item, prefix, parent, new_parent, key)
+            o, new_parent = json2avu_r(item, prefix, parent, new_parent, key, "")
             out.extend(o)
         else:
             out.append({
@@ -27,30 +25,30 @@ def obj2avu(d, prefix, parent, new_parent):
     return out, new_parent
 
 
-def array2avu(d, prefix, parent, new_parent, attribute):
+def array2avu(d, prefix, parent, new_parent, attribute, index):
     out = list()
 
     # Loop through array
     for idx, item in enumerate(d):
+        # Append the index to any existing index
+        new_index = index + "#" + str(idx)
+
         if isinstance(item, dict) or isinstance(item, list):
             # Not a string or int, convert objects and lists recursively
-            o, new_parent = json2avu_r(item, prefix, parent, new_parent, attribute)
-
-            # Append the index to the first element returned
-            o[0]['u'] = o[0]['u'] + "#" + str(idx)
+            o, new_parent = json2avu_r(item, prefix, parent, new_parent, attribute, new_index)
 
             out.extend(o)
         else:
             out.append({
                 "a": attribute,
                 "v": type2str(item),
-                "u": prefix + "_" + str(parent) + "_" + type2def(item) + "#" + str(idx)
+                "u": prefix + "_" + str(parent) + "_" + type2def(item) + new_index
             })
 
     return out, new_parent
 
 
-def json2avu_r(d, prefix, parent, new_parent, attribute):
+def json2avu_r(d, prefix, parent, new_parent, attribute, index):
     out = list()
 
     if isinstance(d, dict):
@@ -61,13 +59,13 @@ def json2avu_r(d, prefix, parent, new_parent, attribute):
         out.append({
             "a": attribute,
             "v": "o" + str(new_parent),
-            "u": prefix + "_" + str(parent) + "_" + "o" + str(new_parent)
+            "u": prefix + "_" + str(parent) + "_" + "o" + str(new_parent) + index
         })
 
         o, parent = obj2avu(d, prefix, new_parent, new_parent)
         out.extend(o)
     elif isinstance(d, list):
-        o, parent = array2avu(d, prefix, parent, new_parent, attribute)
+        o, parent = array2avu(d, prefix, parent, new_parent, attribute, index)
         out.extend(o)
 
     return out, parent
@@ -80,6 +78,9 @@ def json2avu(d, prefix):
     # Start at parent 0
     parent = 0
 
+    # Start without an array index
+    index = ""
+
     if isinstance(d, basestring) or isinstance(d, int):
         # Handle special case where there is only a string or integer
         out = [{
@@ -90,7 +91,7 @@ def json2avu(d, prefix):
     elif isinstance(d, dict):
         out, _ = obj2avu(d, prefix, parent, parent)
     elif isinstance(d, list):
-        out, _ = array2avu(d, prefix, parent, parent, prefix)
+        out, _ = array2avu(d, prefix, parent, parent, prefix, index)
 
     return out
 

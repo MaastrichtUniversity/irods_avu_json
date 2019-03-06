@@ -110,10 +110,7 @@ Tests can be run from the `test` directory. Only in Python3.
 python3 -m unittest test.TestIrodsAvuJson
 ```
 
-## Limits/bugs
+## Limits
 
 On the AVU side
-* If two AVUs have the same attribute but different values only the last one ends up in the JSON
-
-On the JSON side
-* Nested arrays ([["foo"]])
+* If two AVUs have the same attribute and unit but different values only the last one ends up in the JSON
