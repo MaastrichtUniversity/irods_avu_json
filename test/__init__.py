@@ -1,0 +1,1 @@
+from test.test_irods_avu_json import TestIrodsAvuJson

@@ -3,17 +3,16 @@ import jsonavu
 import json
 import os
 
-
-TESTDATA_JSONBASICFILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'basic.json')
-TESTDATA_JSONTYPESFILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'types.json')
+TEST_DATA_JSON_BASIC_FILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'basic.json')
+TEST_DATA_JSON_TYPES_FILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'types.json')
 
 
 class TestIrodsAvuJson(unittest.TestCase):
 
     def setUp(self):
-        self.test_file_basic_json = open(TESTDATA_JSONBASICFILE)
+        self.test_file_basic_json = open(TEST_DATA_JSON_BASIC_FILE)
         self.test_data_basic_json = self.test_file_basic_json.read()
-        self.test_file_types_json = open(TESTDATA_JSONTYPESFILE)
+        self.test_file_types_json = open(TEST_DATA_JSON_TYPES_FILE)
         self.test_data_types_json = self.test_file_types_json.read()
 
     def tearDown(self):
@@ -52,7 +51,6 @@ class TestIrodsAvuJson(unittest.TestCase):
         json_output = jsonavu.avu2json(data, "root")
         self.assertEqual('{"k1": 5}', json.dumps(json_output))
 
-
     def test_simple_json_to_avu_float(self):
         """
         Test if simple json is correctly transformed to avu's using float as type
@@ -75,7 +73,8 @@ class TestIrodsAvuJson(unittest.TestCase):
         """
         data = json.loads('{"k1": true , "k2": false }')
         avu = jsonavu.json2avu(data, "root")
-        self.assertEqual([{'a': u'k2', 'u': 'root_0_b', 'v': 'False'}, {'a': u'k1', 'u': 'root_0_b', 'v': 'True'}], avu)
+        self.assertCountEqual([{'a': u'k2', 'u': 'root_0_b', 'v': 'False'}, {'a': u'k1', 'u': 'root_0_b', 'v': 'True'}],
+                              avu)
 
     def test_simple_avu_to_json_boolean(self):
         """
@@ -149,7 +148,7 @@ class TestIrodsAvuJson(unittest.TestCase):
                         {'a': u'k2', 'u': 'root_0_s#0#1', 'v': u'v6'},
                         {'a': u'k2', 'u': 'root_0_s#1#1', 'v': u'v7'},
                         {'a': u'k1', 'u': 'root_0_s', 'v': u'v1'}]
-        self.assertEqual(expected_avu, avu)
+        self.assertCountEqual(expected_avu, avu)
 
     def test_simple_avu_to_json_nested_array(self):
         """
@@ -161,7 +160,7 @@ class TestIrodsAvuJson(unittest.TestCase):
                 {'a': u'k2', 'u': 'root_0_s#1#1', 'v': u'v7'},
                 {'a': u'k1', 'u': 'root_0_s', 'v': u'v1'}]
         json_output = jsonavu.avu2json(data, "root")
-        self.assertEqual('{"k1": "v1","k2":[["v4", "v5"],["v6", "v7"]]}', json.dumps(json_output, sort_keys=True))
+        self.assertCountEqual('{"k1": "v1","k2":[["v4", "v5"],["v6", "v7"]]}', json.dumps(json_output, sort_keys=True))
 
     def test_simple_bidirectional(self):
         """
@@ -187,7 +186,7 @@ class TestIrodsAvuJson(unittest.TestCase):
                         {'a': 'k7', 'u': 'root_2_b', 'v': 'True'},
                         {'a': 'k5', 'u': 'root_0_n#0', 'v': '42'},
                         {'a': 'k5', 'u': 'root_0_n#1', 'v': '42.42'}]
-        self.assertEqual(expected_avu, avu)
+        self.assertCountEqual(expected_avu, avu)
 
     def test_json_basic_file_bidirectional(self):
         """
@@ -196,14 +195,16 @@ class TestIrodsAvuJson(unittest.TestCase):
         data = json.loads(self.test_data_basic_json)
         avu = jsonavu.json2avu(data, "root")
         json_output = jsonavu.avu2json(avu, "root")
-        self.assertEqual(json.dumps(data, sort_keys=True), json.dumps(json_output, sort_keys=True))
+        self.assertCountEqual(json.dumps(data, sort_keys=True), json.dumps(json_output, sort_keys=True))
 
     def test_avu_to_json_invalid_boolean_exception(self):
         """
         Test if basic json file is correctly transformed to avu and back to json
         """
         data = [{'a': 'k2', 'u': 'root_0_b', 'v': 'Boolean'}]
-        with self.assertRaises(Exception): jsonavu.avu2json(data, "root")
+
+        with self.assertRaises(Exception):
+            jsonavu.avu2json(data, "root")
 
     def test_avu_to_json_illegal_type(self):
         """
@@ -233,7 +234,8 @@ class TestIrodsAvuJson(unittest.TestCase):
         Test if json with only a list is correctly parsed
         """
         avu = jsonavu.json2avu(['test', 'test2'], "root")
-        self.assertEqual([{'a': 'root', 'u': 'root_0_s#0', 'v': 'test'}, {'a': 'root', 'u': 'root_0_s#1', 'v': 'test2'}], avu)
+        self.assertEqual(
+            [{'a': 'root', 'u': 'root_0_s#0', 'v': 'test'}, {'a': 'root', 'u': 'root_0_s#1', 'v': 'test2'}], avu)
 
 
 if __name__ == '__main__':

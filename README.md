@@ -98,6 +98,13 @@ JSON:
 }
 ```
 
+## Testing
+Tests can be run from the `test` directory. Only in Python3.
+
+```bash
+python3 -m unittest test.TestIrodsAvuJson
+```
+
 ## Limits/bugs
 
 On the AVU side
