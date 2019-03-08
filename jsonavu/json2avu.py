@@ -72,26 +72,23 @@ def json2avu_r(d, prefix, parent, new_parent, attribute, index):
 
 
 def json2avu(d, prefix):
-    # List of dictionaries to hold AVUs
-    out = list()
-
     # Start at parent 0
     parent = 0
 
     # Start without an array index
     index = ""
 
-    if isinstance(d, basestring) or isinstance(d, int):
-        # Handle special case where there is only a string or integer
-        out = [{
-            "a": prefix,
-            "v": d,
-            "u": prefix
-        }]
-    elif isinstance(d, dict):
+    if isinstance(d, dict):
         out, _ = obj2avu(d, prefix, parent, parent)
     elif isinstance(d, list):
         out, _ = array2avu(d, prefix, parent, parent, prefix, index)
+    else:
+        # Handle special case where there is only a primitive
+        out = [{
+            "a": prefix,
+            "v": type2str(d),
+            "u": prefix + "_" + str(parent) + "_" + type2def(d)
+        }]
 
     return out
 

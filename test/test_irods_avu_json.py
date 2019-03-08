@@ -227,7 +227,7 @@ class TestIrodsAvuJson(unittest.TestCase):
         Test if json with only a string is correctly parsed
         """
         avu = jsonavu.json2avu('test', "root")
-        self.assertEqual([{'a': 'root', 'u': 'root', 'v': 'test'}], avu)
+        self.assertEqual([{'a': 'root', 'u': 'root_0_s', 'v': 'test'}], avu)
 
     def test_json_to_avu_only_list_input(self):
         """
