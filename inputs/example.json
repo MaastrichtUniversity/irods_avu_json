@@ -1,0 +1,15 @@
+{
+  "title": "Hello world!",
+  "description" : "This is a longer line giving a description.",
+  "parameters": {
+    "size" : 42,
+    "readOnly" : false
+  },
+  "authors" : ["Daniel", "Paul"],
+  "references": [
+    {
+      "title": "The Rule Engine Plugin Framework",
+      "doi": "https://doi.org/1234.5678"
+    }
+  ]
+}

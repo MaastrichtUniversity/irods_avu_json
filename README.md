@@ -73,7 +73,7 @@ AVUs:
      k4      v3        root_1_s
      k5      v4      root_0_s#0
      k5      v5      root_0_s#1
-     k6      o1     root_0_o2#0
+     k6      o2     root_0_o2#0
      k7      v6        root_2_s
      k8      v7        root_2_s
 JSON:
