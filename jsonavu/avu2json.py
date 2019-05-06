@@ -1,15 +1,18 @@
 import re
 
+RE_UNIT = '^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)'
+RE_INDICES = '#([0-9]+)'
+
 
 def avu2json(avu, prefix, parent=0):
     data = None
 
     # Regular expression pattern for unit field
-    pattern = re.compile('^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)')
+    pattern = re.compile(RE_UNIT)
     # Group 1: parent, group 2: var type, group 3: object id, group 4: array indices
 
     # Matching the array indices separately
-    indices_pattern = re.compile('#([0-9]+)')
+    indices_pattern = re.compile(RE_INDICES)
 
     for item in avu:
         if not item['u'].startswith(prefix + "_" + str(parent) + "_"):
