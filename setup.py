@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="irods_avu_json",
-    version="0.1.0",
+    version="1.0.0",
     author="Maastricht University - DataHub",
     author_email="datahub@maastrichtuniversity.nl",
     description="Bidirectional conversion between JSON(-LD) and iRODS AVUs",
@@ -14,7 +14,9 @@ setuptools.setup(
     url="https://github.com/MaastrichtUniversity/irods_avu_json",
     packages=['jsonavu'],
     classifiers=[
+        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
+        "License :: OSI Approved :: Apache Software License"
     ],
 )
