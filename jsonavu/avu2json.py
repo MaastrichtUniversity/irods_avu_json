@@ -1,6 +1,6 @@
 import re
 
-RE_UNIT = '^[a-zA-Z0-9_]+_([0-9]+)_([osbnze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)'
+RE_UNIT = '^[a-zA-Z0-9_]+_([0-9]+)_([osbanze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)'
 RE_INDICES = '#([0-9]+)'
 
 
@@ -104,5 +104,7 @@ def def2type(v, t):
             return float(v)
     elif t == 'z':
         return None
+    elif t == 'a':
+        return []
     else:
         raise Exception("Type does not exist")

@@ -27,7 +27,7 @@ The unit is field is being used for the following purposes:
 
 * Defining the JSON root
 * The parent object (0 by default)
-* The object type (o, s, b, n, z, e)
+* The object type (o, s, b, a, n, z, e)
 * The array index
 
 AVUs only allow a string value. The types are converted as follows:
@@ -38,6 +38,7 @@ AVUs only allow a string value. The types are converted as follows:
 * n: number (String value of float or int)
 * z: null (".")
 * e: empty string (".") (special case as AVUs don't allow empty values)
+* a: empty array (".")
 
 ## Installation
 Either clone the git repository, or use pip to install only the module into your virtual environment:

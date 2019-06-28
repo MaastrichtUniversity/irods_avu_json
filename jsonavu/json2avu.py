@@ -28,6 +28,15 @@ def obj2avu(d, prefix, parent, new_parent):
 def array2avu(d, prefix, parent, new_parent, attribute, index):
     out = list()
 
+    # Empty list
+    if not d:
+        out.append({
+            "a": attribute,
+            "v": ".",
+            "u": prefix + "_" + str(parent) + "_a" + index
+        })
+        return out, new_parent
+
     # Loop through array
     for idx, item in enumerate(d):
         # Append the index to any existing index
