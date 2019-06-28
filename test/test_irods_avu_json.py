@@ -170,11 +170,20 @@ class TestIrodsAvuJson(unittest.TestCase):
         """
         Test if simple json is correctly transformed to avu using empty array
         """
+        data = json.loads('{"k1": "v1","emptyArr": []}')
+        avu = jsonavu.json2avu(data, "root")
+        expected_avu = [{'a': u'k1', 'u': 'root_0_s', 'v': u'v1'},
+                        {'a': u'emptyArr', 'u': 'root_0_a', 'v': u'.'}]
+        self.assertCountEqual(expected_avu, avu)
 
     def test_simple_avu_to_json_empty_array(self):
         """
         Test if simple avu is correctly transformed to json using empty array
         """
+        data = [{'a': u'k1', 'u': 'root_0_s', 'v': u'v1'},
+                {'a': u'emptyArr', 'u': 'root_0_a', 'v': u'.'}]
+        json_output = jsonavu.avu2json(data, "root")
+        self.assertEqual('{"emptyArr": [], "k1": "v1"}', json.dumps(json_output, sort_keys=True))
 
     def test_simple_json_to_avu_empty_object(self):
         """
