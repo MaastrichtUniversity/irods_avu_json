@@ -4,6 +4,7 @@ import json
 import os
 
 TEST_DATA_JSON_BASIC_FILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'basic.json')
+TEST_DATA_JSON_EMPTY_ARRAYS_FILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'empty-arrays.json')
 TEST_DATA_JSON_TYPES_FILE = os.path.join(os.path.dirname(__file__), '..', 'inputs', 'types.json')
 
 
@@ -14,10 +15,13 @@ class TestIrodsAvuJson(unittest.TestCase):
         self.test_data_basic_json = self.test_file_basic_json.read()
         self.test_file_types_json = open(TEST_DATA_JSON_TYPES_FILE)
         self.test_data_types_json = self.test_file_types_json.read()
+        self.test_file_empty_arrays_json = open(TEST_DATA_JSON_EMPTY_ARRAYS_FILE)
+        self.test_data_empty_arrays_json = self.test_file_empty_arrays_json.read()
 
     def tearDown(self):
         self.test_file_basic_json.close()
         self.test_file_types_json.close()
+        self.test_file_empty_arrays_json.close()
 
     def test_simple_json_to_avu_string(self):
         """
@@ -162,6 +166,36 @@ class TestIrodsAvuJson(unittest.TestCase):
         json_output = jsonavu.avu2json(data, "root")
         self.assertEqual('{"k1": "v1", "k2": [["v4", "v5"], ["v6", "v7"]]}', json.dumps(json_output, sort_keys=True))
 
+    def test_simple_json_to_avu_empty_array(self):
+        """
+        Test if simple json is correctly transformed to avu using empty array
+        """
+
+    def test_simple_avu_to_json_empty_array(self):
+        """
+        Test if simple avu is correctly transformed to json using empty array
+        """
+
+    def test_simple_json_to_avu_empty_object(self):
+        """
+        Test if simple json is correctly transformed to avu using empty object
+        """
+        data = json.loads('{"k1": "v1","emptyObj": {}}')
+        avu = jsonavu.json2avu(data, "root")
+        expected_avu = [{'a': u'k1', 'u': 'root_0_s', 'v': u'v1'},
+                        {'a': u'emptyObj', 'u': 'root_0_o1', 'v': u'o1'}]
+        self.assertCountEqual(expected_avu, avu)
+
+
+    def test_simple_avu_to_json_empty_object(self):
+        """
+        Test if simple avu is correctly transformed to json using empty object
+        """
+        data = [{'a': u'k1', 'u': 'root_0_s', 'v': u'v1'},
+                {'a': u'emptyObj', 'u': 'root_0_o1', 'v': u'o1'}]
+        json_output = jsonavu.avu2json(data, "root")
+        self.assertEqual('{"emptyObj": {}, "k1": "v1"}', json.dumps(json_output, sort_keys=True))
+
     def test_simple_bidirectional(self):
         """
         Test if simple json is correctly transformed to avu and back to json
@@ -193,6 +227,15 @@ class TestIrodsAvuJson(unittest.TestCase):
         Test if basic json file is correctly transformed to avu and back to json
         """
         data = json.loads(self.test_data_basic_json)
+        avu = jsonavu.json2avu(data, "root")
+        json_output = jsonavu.avu2json(avu, "root")
+        self.assertCountEqual(json.dumps(data, sort_keys=True), json.dumps(json_output, sort_keys=True))
+
+    def test_json_empty_arrays_file_bidirectional(self):
+        """
+        Test if empty array and empty object json file is correctly transformed to avu and back to json
+        """
+        data = json.loads(self.test_data_empty_arrays_json)
         avu = jsonavu.json2avu(data, "root")
         json_output = jsonavu.avu2json(avu, "root")
         self.assertCountEqual(json.dumps(data, sort_keys=True), json.dumps(json_output, sort_keys=True))

@@ -46,6 +46,10 @@ def avu2json(avu, prefix, parent=0):
 
             # Recursively check the unit/subject field for new AVUs with this new root
             value = avu2json(avu, prefix, object_id)
+
+            # If the object exists but is empty, return an empty object as well
+            if value is None:
+                value = {}
         else:
             key = item['a']
             value = def2type(item['v'], var_type)
