@@ -21,7 +21,6 @@ This script describes a method for converting JSON to AVU triples and back again
 * Compatible with existing or additional AVUs 
 * Compatible/aware of JSON-LD
 
-
 ## Implementation
 The unit is field is being used for the following purposes:
 
@@ -41,10 +40,21 @@ AVUs only allow a string value. The types are converted as follows:
 * a: empty array (".")
 
 ## Installation
-Either clone the git repository, or use pip to install only the module into your virtual environment:
+Either clone the git repository, or use pip to install the module into your Python (virtual) environment:
 ```bash
-pip install https://github.com/MaastrichtUniversity/irods_avu_json/archive/master.zip
+pip install irods_avu_json
 ```
+
+### From within iRODS
+This Python module, by itself, has no interaction or awareness of iRODS.
+
+There is a companion repository [irods_avu_json-ruleset](https://github.com/MaastrichtUniversity/irods_avu_json-ruleset) that contains
+all contains the iRODS rules, policies and microservices to make the conversion code operational in iRODS.
+
+### Docker
+A description of a docker contain running the ruleset, its microservices and python dependencies exists in the
+[irods_avu_json-docker](https://github.com/MaastrichtUniversity/irods_avu_json-docker) repository. You can use this
+to quickly try out this module and test its functionality.
 
 ## Example output
 ```
@@ -115,3 +125,14 @@ python3 -m unittest test.TestIrodsAvuJson
 
 On the AVU side
 * If two AVUs have the same attribute and unit but different values only the last one ends up in the JSON
+
+## Authors
+Paul van Schayck (p.vanschayck@maastrichtuniversity.nl), Ton Smeele, Daniel Theunissen and Lazlo Westerhof 
+
+## Copyright and license
+
+(c) Maastricht University
+(c) Utrecht University
+
+Apache License 2.0
+ 
