@@ -1,2 +1,7 @@
 # pycharm
 .idea
+
+# setup build
+build
+dist
+irods_avu_json.egg-info
