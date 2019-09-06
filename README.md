@@ -24,7 +24,7 @@ This script describes a method for converting JSON to AVU triples and back again
 ## Implementation
 The unit is field is being used for the following purposes:
 
-* Defining the JSON root
+* Defining the JSON namespace
 * The parent object (0 by default)
 * The object type (o, s, b, a, n, z, e)
 * The array index

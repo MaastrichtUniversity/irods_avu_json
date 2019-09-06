@@ -44,7 +44,7 @@ def avu2json(avu, prefix, parent=0):
         if var_type == "o":
             key = item['a']
 
-            # Recursively check the unit/subject field for new AVUs with this new root
+            # Recursively check the unit/subject field for new AVUs with this new namespace
             value = avu2json(avu, prefix, object_id)
 
             # If the object exists but is empty, return an empty object as well
