@@ -3,7 +3,7 @@
 ## Rationale
 
 JSON is a flexible and easy to use format for storing (nested) data. At the same time 
-it can remain human readable. It can therefor be an ideal method for 
+it can remain human readable. It can therefore be an ideal method for
 storing metadata in iRODS. However, iRODS uses Attribute, Value, Unit triples. Its 
 largest drawback being the lack of nesting. 
 
@@ -20,6 +20,7 @@ This script describes a method for converting JSON to AVU triples and back again
 * Keep Attribute->Value pairs the same in JSON and AVUs. So values remain easily accessible from within iRODS
 * Compatible with existing or additional AVUs 
 * Compatible/aware of JSON-LD
+* Unicode-safe
 
 ## Implementation
 The unit is field is being used for the following purposes:
@@ -49,10 +50,10 @@ pip install irods_avu_json
 This Python module, by itself, has no interaction or awareness of iRODS.
 
 There is a companion repository [irods_avu_json-ruleset](https://github.com/MaastrichtUniversity/irods_avu_json-ruleset) that contains
-all contains the iRODS rules, policies and microservices to make the conversion code operational in iRODS.
+all the iRODS rules, policies, and microservices to make the conversion code operational in iRODS.
 
 ### Docker
-A description of a docker contain running the ruleset, its microservices and python dependencies exists in the
+A description of a docker container running the ruleset, its microservices, and python dependencies exists in the
 [irods_avu_json-docker](https://github.com/MaastrichtUniversity/irods_avu_json-docker) repository. You can use this
 to quickly try out this module and test its functionality.
 
@@ -115,10 +116,10 @@ python conversion.py inputs/basic.json
 ```
 
 ## Testing
-Tests can be run from the `test` directory. Only in Python3.
+Tests can be run from the top-level directory (requires Python3).
 
 ```bash
-python3 -m unittest test.TestIrodsAvuJson
+python3 -m unittest test
 ```
 
 ## Limits
@@ -135,4 +136,4 @@ Paul van Schayck (p.vanschayck@maastrichtuniversity.nl), Ton Smeele, Daniel Theu
 (c) Utrecht University
 
 Apache License 2.0
- 
+
