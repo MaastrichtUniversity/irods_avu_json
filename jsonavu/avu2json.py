@@ -1,4 +1,5 @@
 import re
+import sys
 
 RE_UNIT = '^[a-zA-Z0-9_]+_([0-9]+)_([osbanze])((?<=o)[0-9]+)?((?:#[0-9]+?)*)'
 RE_INDICES = '#([0-9]+)'
@@ -87,7 +88,10 @@ def multi_dim_list_insert(data, array_indices, value):
 
 def def2type(v, t):
     if t == 's':
-        return str(v)
+        if (sys.version_info < (3, 0)):
+            return v.encode('utf-8')
+        else:
+            return str(v)
     elif t == 'e':
         return ""
     elif t == 'b':

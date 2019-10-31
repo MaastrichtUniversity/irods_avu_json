@@ -214,6 +214,15 @@ class TestIrodsAvuJson(unittest.TestCase):
         json_output = jsonavu.avu2json(avu, "root")
         self.assertEqual('{"k1": "v1"}', json.dumps(json_output))
 
+    def test_unicode_bidirectional(self):
+        """
+        Test if unicode json is correctly transformed to avu and back to json
+        """
+        data = json.loads('{"k1": "µm"}')
+        avu = jsonavu.json2avu(data, "root")
+        json_output = jsonavu.avu2json(avu, "root")
+        self.assertEqual('{"k1": "µm"}', json.dumps(json_output, ensure_ascii=False))
+
     def test_json_types_file_json_to_avu(self):
         """
         Test if types json file is correctly transformed to avu
