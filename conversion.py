@@ -11,11 +11,14 @@ with open(sys.argv[1]) as f:
 avu = jsonavu.json2avu(data, "root")
 
 print("Source:")
-print(json.dumps(data, indent=4))
+if (sys.version_info < (3, 0)):
+    print(json.dumps(data, indent=4, ensure_ascii=False, encoding='utf8'))
+else:
+    print(json.dumps(data, indent=4, ensure_ascii=False).encode('utf8').decode())
 
 # Find out max V length and use that for formatting
-max_a_len = len(max(avu, key=lambda k: len(str(k["a"])))["a"])
-max_v_len = len(max(avu, key=lambda k: len(str(k["v"])))["v"])
+max_a_len = len(max(avu, key=lambda k: len(k["a"].encode('utf-8')))["a"])
+max_v_len = len(max(avu, key=lambda k: len(k["v"].encode('utf-8')))["v"])
 out_format = "%" + str(max_a_len + 5) + "s %" + str(max_v_len + 5) + "s %15s"
 
 print("AVUs:")
@@ -25,4 +28,7 @@ for i in avu:
 
 print("JSON:")
 data_back = jsonavu.avu2json(avu, "root")
-print(json.dumps(data_back, indent=4))
+if (sys.version_info < (3, 0)):
+    print(json.dumps(data_back, indent=4, ensure_ascii=False, encoding='utf8'))
+else:
+    print(json.dumps(data_back, indent=4, ensure_ascii=False).encode('utf8').decode())
