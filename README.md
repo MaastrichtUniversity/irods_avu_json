@@ -7,7 +7,7 @@ it can remain human readable. It can therefor be an ideal method for
 storing metadata in iRODS. However, iRODS uses Attribute, Value, Unit triples. Its 
 largest drawback being the lack of nesting. 
 
-This script describes a method for converting JSON to AVU triples and back again 
+This Python module describes a method for converting JSON to AVU triples and back again 
 (bidirectional).
 
 ## Design goals
@@ -24,10 +24,10 @@ This script describes a method for converting JSON to AVU triples and back again
 ## Implementation
 The unit is field is being used for the following purposes:
 
-* Defining the JSON root
-* The parent object (0 by default)
-* The object type (o, s, b, a, n, z, e)
-* The array index
+1. The JSON-AVU namespace
+2. The parent object (0 by default)
+3. The object type (o, s, b, a, n, z, e)
+4. The array index
 
 AVUs only allow a string value. The types are converted as follows:
 
