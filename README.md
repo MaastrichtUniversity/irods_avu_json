@@ -127,6 +127,13 @@ python3 -m unittest test
 On the AVU side
 * If two AVUs have the same attribute and unit but different values only the last one ends up in the JSON
 
+## More information
+This work was presented at the iRODS UGM2019 in Utrecht, The Netherlands. You can view the 
+[recording](https://www.youtube.com/watch?v=CUUjuIC_-0w&list=PL29FhEN41mZN6S54IMBMwIPDC_dMiWFJG&index=5),
+the [slides](https://irods.org/uploads/2019/vanSchayck-Maastricht-JSON2AVU-slides.pdf) 
+or the accompying [paper](https://irods.org/uploads/2019/vanSchayck-Maastricht-JSON2AVU-paper.pdf) 
+for more information.
+
 ## Authors
 Paul van Schayck (p.vanschayck@maastrichtuniversity.nl), Ton Smeele, Daniel Theunissen and Lazlo Westerhof 
 
