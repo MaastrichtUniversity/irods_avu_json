@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="irods_avu_json",
-    version="2.1.0",
+    version="2.2.0",
     author="Maastricht University - DataHub",
     author_email="datahub@maastrichtuniversity.nl",
     description="Bidirectional conversion between JSON(-LD) and iRODS AVUs",
