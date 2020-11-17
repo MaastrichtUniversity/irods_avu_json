@@ -1,5 +1,6 @@
 from distutils.core import setup
 import glob
+import setuptools
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
